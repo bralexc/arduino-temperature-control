@@ -232,11 +232,11 @@ void logData()
    
     // print to serial for python routine - time, temperature, power
     Serial.print(last_data_log/1000);
-    Serial.print(" ");
+    Serial.print(F(" "));
     Serial.print(current_temperature);
-    Serial.print(" ");
+    Serial.print(F(" "));
     Serial.print(heater_active);
-    Serial.print(" ");
+    Serial.print(F(" "));
     Serial.println(heater_percentage);
   }
 }
@@ -262,7 +262,7 @@ void setRelayState()
   heater_percentage = map(analogRead(HEATER_POT), 0, 1023, 0, 100);
   
   lcd.setCursor(7,3);
-  if(heater_percentage < 10)  lcd.print("0");
+  if(heater_percentage < 10)  lcd.print(F("0"));
   lcd.print(heater_percentage);   
   
   lcd.setCursor(0,3);
@@ -313,7 +313,7 @@ void updateTimes()
       
       if((millis() - mash_time_start) > mash_step_time){
         lcd.setCursor(0,2);
-        lcd.print("-> step finished! <-");
+        lcd.print(F("-> step finished! <-"));
         tone(BUZZER, 2500);
       }
     }
@@ -345,22 +345,22 @@ void set_new_mash_step()
   lcd.clear();
   
   lcd.setCursor(0,0);
-  lcd.print(" new mash step data ");
+  lcd.print(F(" new mash step data "));
   
   lcd.setCursor(0,1);
-  lcd.print("        ----        ");
+  lcd.print(F("        ----        "));
   
-  lcd.setCursor(0,2); lcd.print("step time: >"); 
+  lcd.setCursor(0,2); lcd.print(F("step time: >")); 
   // if time < 10 min, print a leading '0'
   if(mash_step_time/60000 < 10)
-    lcd.print("0");
+    lcd.print(F("0"));
   lcd.print(mash_step_time/60000);
-  lcd.print(" min");
+  lcd.print(F(" min"));
   
   lcd.setCursor(0,3);
-  lcd.print("step temp:  ");
+  lcd.print(F("step temp:  "));
   lcd.print(target_temperature);
-  lcd.print(" *C");
+  lcd.print(F(" *C"));
 
   tone(BUZZER, 1000, 500); // f (Hz), length (ms)
   
@@ -400,17 +400,17 @@ void set_new_mash_step()
     if (new_data) {
       lcd.setCursor(12,2);
       if(new_mash_step_time/60000 < 10)
-        lcd.print("0");
+        lcd.print(F("0"));
       lcd.print(new_mash_step_time/60000);
-      lcd.print(" min");
+      lcd.print(F(" min"));
     }
     delay(10);
   }
   
   lcd.setCursor(11,2);
-  lcd.print(" ");
+  lcd.print(F(" "));
   lcd.setCursor(11,3);
-  lcd.print(">");
+  lcd.print(F(">"));
 
   tone(BUZZER, 1000, 100); // f (Hz), length (ms)
   
@@ -448,9 +448,9 @@ void set_new_mash_step()
     if (new_data) {
       lcd.setCursor(12,3);
       if(new_target_temperature < 10.0)
-        lcd.print("0");
+        lcd.print(F("0"));
       lcd.print(new_target_temperature);
-      lcd.print(" *C");
+      lcd.print(F(" *C"));
     }
     delay(10);
   }
@@ -458,18 +458,18 @@ void set_new_mash_step()
   tone(BUZZER, 1000, 100); // f (Hz), length (ms)
   
   // once time and temperature are set, let's confirm those values were ok
-  lcd.setCursor(0,1);  lcd.print("  00.0 C for 00 min ");
-  lcd.setCursor(0,2);  lcd.print("      confirm?      ");
-  lcd.setCursor(0,3);  lcd.print("      yes   >no     ");
+  lcd.setCursor(0,1);  lcd.print(F("  00.0 C for 00 min "));
+  lcd.setCursor(0,2);  lcd.print(F("      confirm?      "));
+  lcd.setCursor(0,3);  lcd.print(F("      yes   >no     "));
   
   lcd.setCursor(2,1);
-  if(new_target_temperature < 10.0) lcd.print("0");
+  if(new_target_temperature < 10.0) lcd.print(F("0"));
   lcd.print(new_target_temperature);
   
   lcd.setCursor(13,1);
-  if(new_mash_step_time/60000 < 10) lcd.print("0");
+  if(new_mash_step_time/60000 < 10) lcd.print(F("0"));
   lcd.print(new_mash_step_time/60000);
-  lcd.print(" min  ");
+  lcd.print(F(" min  "));
 
   new_data = false;
   while(!btn_press(BUTTON_SEL, 50))
@@ -477,13 +477,13 @@ void set_new_mash_step()
     
     if (btn_press(BUTTON_DOWN, 50)) {
       lcd.setCursor(5,3);
-      lcd.print(" yes   >no");
+      lcd.print(F(" yes   >no"));
       new_data = false;
     }
       
     if (btn_press(BUTTON_UP, 50)){
       lcd.setCursor(5,3);
-      lcd.print(">yes    no");
+      lcd.print(F(">yes    no"));
       new_data = true;
     }
 
@@ -520,10 +520,10 @@ void set_new_mash_step()
 // print base menu
 void print_base_menu()
 {
-  lcd.setCursor(0,0); lcd.print("time:  00:00 > "); lcd.print(formatted_time(mash_step_time));
-  lcd.setCursor(0,1); lcd.print("temp:  00.00 > "); lcd.print(target_temperature);
-  lcd.setCursor(0,2); lcd.print("                    ");
-  lcd.setCursor(0,3); lcd.print("HP     00%  00:00:00");
+  lcd.setCursor(0,0); lcd.print(F("time:  00:00 > ")); lcd.print(formatted_time(mash_step_time));
+  lcd.setCursor(0,1); lcd.print(F("temp:  00.00 > ")); lcd.print(target_temperature);
+  lcd.setCursor(0,2); lcd.print(F("                    "));
+  lcd.setCursor(0,3); lcd.print(F("HP     00%  00:00:00"));
   
   lcd.setCursor(0,3); lcd.write(1);
   lcd.setCursor(1,3); lcd.write(3);
