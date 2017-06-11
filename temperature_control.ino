@@ -115,7 +115,7 @@ void print_formated_time(unsigned long, byte, byte, boolean);
 char * formatted_time(unsigned long ms, boolean hour=false);
 void ring_buzzer(int ntimes, int buzz_time, int frequency=1500, bool interrupt=false);
 
-
+// function mode: 1-mashing, 2-boiling
 byte mode;
 
 void setup()
@@ -202,6 +202,59 @@ void loop()
 }
 
 
+
+
+// mode selection menu
+void modeSelectionMenu()
+{
+  //     01234567890123456789               
+  //    |--------------------|            
+  // 0  |choose control mode:| 0
+  // 1  |                    | 1
+  // 2  |     > mashing      | 2
+  // 3  |     > boiling      | 3
+  //    |--------------------|
+  //     01234567890123456789
+  //
+  
+  lcd.setCursor(0,0);
+  lcd.print("choose control mode:");
+  
+  lcd.setCursor(5,2);
+  lcd.print("> mashing")
+  
+  lcd.setCursor(7,3);
+  lcd.print("boiling")
+  
+  while(!btn_press(BUTTON_SEL, 50))
+  {
+    
+    if (btn_press(BUTTON_UP, 50)){
+      lcd.setCursor(5,2); lcd.print(">");
+      lcd.setCursor(5,3); lcd.print(" ");
+      mode = 1;
+    }
+    
+    if (btn_press(BUTTON_DOWN, 50)) {
+      lcd.setCursor(5,2); lcd.print(" ");
+      lcd.setCursor(5,3); lcd.print(">");
+      mode = 2;
+    }
+
+    delay(10);
+  }
+  
+  if(mode == 1)
+  {
+    \\ todo: call the mashing mode loop,
+    \\       which currently is the main arduino loop
+  }
+  
+  if(mode == 2)
+  {
+    \\ todo: call the boiling loop, which still needs to be developed
+  }
+}
 
 
 // update temperature reading
