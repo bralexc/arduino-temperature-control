@@ -96,7 +96,7 @@ byte buttons[] = {BUTTON_UP, BUTTON_DOWN, BUTTON_SEL};
 // temperature sensor definitions
 OneWire ds(DS18S20);
 DallasTemperature sensors(&ds);
-DeviceAddress insideThermometer;
+DeviceAddress thermometer_in;
 
 // LCD
 LiquidCrystal595 lcd(10,9,8);     // datapin, latchpin, clockpin
@@ -146,8 +146,8 @@ void setup()
 
   // start sensors, get adress and set resolution to 0.25 (10 bit)
   sensors.begin();
-  sensors.getAddress(insideThermometer, 0);
-  sensors.setResolution(insideThermometer, 10);
+  sensors.getAddress(thermometer_in, 0);
+  sensors.setResolution(thermometer_in, 10);
   
   // Setup buttons with an internal pull-up
   for(byte i=0; i<NUMBUTTONS; i++) {
@@ -184,19 +184,19 @@ void setup()
 void loop()
 {
   // update temperature as needed  
-  updateTemperature();
+  update_temperature();
   
   // Check button press
-  checkButtonPress();
+  check_button_press();
   
   // turn the relay OFF if temperature higher then target  
-  setRelayState();
+  set_relay_state();
   
   // update timers on the lcd
-  updateTimes();
+  update_times();
   
   // log data to serial
-  logData();
+  log_data();
   
   delay(50);
 }
@@ -205,7 +205,7 @@ void loop()
 
 
 // mode selection menu
-void modeSelectionMenu()
+void mode_selection_menu()
 {
   //     01234567890123456789               
   //    |--------------------|            
@@ -258,14 +258,14 @@ void modeSelectionMenu()
 
 
 // update temperature reading
-void updateTemperature()
+void update_temperature()
 {
   // only perform measurement if enough time has passed
   if((millis() - last_measure) >= MEASURE_DELAY)
   {
     last_measure = millis();
     sensors.requestTemperatures();
-    current_temperature = sensors.getTempC(insideThermometer);
+    current_temperature = sensors.getTempC(thermometer_in);
     if(current_temperature)
     {      
       lcd.setCursor(7,1);
@@ -277,7 +277,7 @@ void updateTemperature()
 
 
 // write python to ser
-void logData()
+void log_data()
 {
   if((millis() - last_data_log) >= DATA_LOG_DELAY)
   {
@@ -297,7 +297,7 @@ void logData()
 
 
 // check if SEL button was pressed
-void checkButtonPress()
+void check_button_press()
 {
   if(btn_press(BUTTON_SEL, 500))
   {
@@ -309,7 +309,7 @@ void checkButtonPress()
 
 
 // set relay state based on temperature
-void setRelayState()
+void set_relay_state()
 {
   heater_control = map(analogRead(HEATER_POT), 0, 1023, 0, HEATER_WINDOW);
   heater_percentage = map(analogRead(HEATER_POT), 0, 1023, 0, 100);
@@ -355,7 +355,7 @@ void setRelayState()
 
 
 // update times printed on the LCD
-void updateTimes()
+void update_times()
 {
   if (in_mash_step)
   {
