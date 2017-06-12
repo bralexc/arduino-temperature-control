@@ -1,0 +1,46 @@
+
+- DS18B20 sensor for temperature reading
+- two buttons for adjusting target temperature (+ and -)
+
+pin out:
+
+ button up   -> gnd
+ button up   -> pin A2
+ button down -> gnd
+ button down -> pin A1
+ button sel  -> gnd
+ button sel  -> pin A0
+ (buttons will use internal pull-up, so no need for resistors)
+ 
+ (looking at the pot)
+ pot left  -> gnd
+ pot right -> +5V
+ pot mid   -> pin A3
+ 
+ sensor red wire (vcc)     -> +5V
+ sensor yellow wire (data) -> pin 4 -> 4.7 kOhm resistor -> +5V
+ sensor green wire (gnd)   -> gnd
+
+ (this means there is a pull-up in the data wire)
+ (btw, green SHOULD be data and yellow SHOULD be gnd, but in mine it's like above)
+ 
+ * if it keeps reading -1000, check gnd and data
+ * if it keeps reading +85, check vcc
+
+ heater relay on + -> pin 5
+ heater relay on - -> gnd
+ 
+ buzzer+ -> pin 3
+ buzzer- -> 220 Ohm resistor -> gnd
+
+ 
+ (this is using the 3pin lcd library, so pins are only needed for power and controling a shift register)
+
+ lcd pcb-      -> gnd          LCD info:      01234567890123456789               
+ lcd pcb+      -> +5V                        |--------------------|            
+ lcd pcb clock -> pin 8                      |time:  00:00 > 00:00| 0
+ lcd pcb latch -> pin 9                   1  |temp:  00:00 > 00.00| 1
+ lcd pcb data  -> pin 10                  2  |                    | 2
+                                          3  |HP     00%  00:00:00| 3
+                                             |--------------------|
+                                              01234567890123456789
